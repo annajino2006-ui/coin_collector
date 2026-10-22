@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5fae9" />
+    <meta
+      name="description"
+      content="A cheerful little coin collecting adventure. Move fast, grab gold, and dodge the grumpy slimes!"
+    />
+    <title>Coin Collector - Meadow Dash</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Meadow Dash home">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span>MEADOW <strong>DASH</strong></span>
+        </a>
+        <div class="top-meta">
+          <span class="best-label">PERSONAL BEST</span>
+          <span class="best-value"
+            ><span aria-hidden="true">★</span> <b id="best-score">0</b></span
+          >
+        </div>
+      </header>
+
+      <section class="game-layout" aria-label="Coin Collector game">
+        <div class="game-column">
+          <div class="hud" aria-label="Game status">
+            <div class="hud-item score-item">
+              <span class="hud-icon coin-icon" aria-hidden="true">¢</span>
+              <span><small>COINS</small><strong id="score">0</strong></span>
+            </div>
+            <div class="hud-item time-item" id="timer-wrap">
+              <span class="hud-icon clock-icon" aria-hidden="true">◷</span>
+              <span><small>TIME</small><strong id="timer">60</strong></span>
+            </div>
+            <div class="hud-item lives-item">
+              <span
+                ><small>HEARTS</small
+                ><strong id="lives" aria-label="3 lives">♥ ♥ ♥</strong></span
+              >
+            </div>
+            <button
+              class="icon-button sound-button"
+              id="sound-toggle"
+              type="button"
+              aria-label="Turn sound off"
+              title="Turn sound off"
+            >
+              <span id="sound-icon" aria-hidden="true">♫</span>
+            </button>
+            <button
+              class="icon-button pause-button"
+              id="pause-button"
+              type="button"
+              aria-label="Pause game"
+              title="Pause game"
+              disabled
+            >
+              <span id="pause-icon" aria-hidden="true">Ⅱ</span>
+            </button>
+          </div>
+
+          <div class="board-frame">
+            <canvas
+              id="game-canvas"
+              width="960"
+              height="600"
+              aria-label="Game field. Collect coins and avoid the moving slimes."
+              role="img"
+            ></canvas>
+
+            <section
+              class="game-screen start-screen"
+              id="start-screen"
+              aria-labelledby="game-title"
+            >
+              <div class="screen-card intro-card">
+                <div class="title-stamp" aria-hidden="true">
+                  <span>✦</span><i>✦</i>
+                </div>
+                <p class="eyebrow">A LITTLE ADVENTURE IN THE MEADOW</p>
+                <h1 id="game-title">Coin<br /><span>Collector</span></h1>
+                <p class="screen-copy">
+                  Gather the golden coins. Keep an eye out for the grumpy
+                  slimes!
+                </p>
+                <div class="key-hint">
+                  <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>or</span
+                  ><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd>
+                </div>
+                <button class="primary-button" id="start-button" type="button">
+                  Start collecting <span aria-hidden="true">→</span>
+                </button>
+                <p class="small-note">You have 60 seconds and 3 hearts</p>
+              </div>
+            </section>
+
+            <section
+              class="game-screen pause-screen hidden"
+              id="pause-screen"
+              aria-labelledby="pause-title"
+              aria-hidden="true"
+            >
+              <div class="screen-card compact-card">
+                <p class="eyebrow">TAKE YOUR TIME</p>
+                <h2 id="pause-title">Paused</h2>
+                <p class="screen-copy">The meadow can wait.</p>
+                <button class="primary-button" id="resume-button" type="button">
+                  Back to game <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </section>
+
+            <section
+              class="game-screen over-screen hidden"
+              id="over-screen"
+              aria-labelledby="over-title"
+              aria-hidden="true"
+            >
+              <div class="screen-card compact-card">
+                <p class="eyebrow" id="over-eyebrow">
+                  THE MEADOW SAYS WELL PLAYED
+                </p>
+                <h2 id="over-title">Lovely run!</h2>
+                <p class="final-score">
+                  <strong id="final-score">0</strong
+                  ><span>coins collected</span>
+                </p>
+                <p class="best-message" id="best-message">Personal best: 0</p>
+                <button
+                  class="primary-button"
+                  id="restart-button"
+                  type="button"
+                >
+                  Play again <span aria-hidden="true">↻</span>
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <div class="mobile-controls" aria-label="Touch controls">
+            <button
+              class="direction-button up"
+              type="button"
+              data-direction="up"
+              aria-label="Move up"
+            >
+              ↑
+            </button>
+            <button
+              class="direction-button left"
+              type="button"
+              data-direction="left"
+              aria-label="Move left"
+            >
+              ←
+            </button>
+            <button
+              class="direction-button down"
+              type="button"
+              data-direction="down"
+              aria-label="Move down"
+            >
+              ↓
+            </button>
+            <button
+              class="direction-button right"
+              type="button"
+              data-direction="right"
+              aria-label="Move right"
+            >
+              →
+            </button>
+          </div>
+        </div>
+
+        <aside class="side-panel">
+          <div class="mission-heading">
+            <span class="mission-flower" aria-hidden="true">✿</span>
+            <div>
+              <p class="eyebrow">TODAY'S MISSION</p>
+              <h2>Make it count.</h2>
+            </div>
+          </div>
+          <div class="mission-row">
+            <span class="row-icon gold-dot" aria-hidden="true">✦</span>
+            <p>
+              <strong>Find the gold</strong
+              ><small>Each coin adds 10 points</small>
+            </p>
+          </div>
+          <div class="mission-row">
+            <span class="row-icon slime-dot" aria-hidden="true">●</span>
+            <p>
+              <strong>Mind the slimes</strong
+              ><small>They get quicker as you score</small>
+            </p>
+          </div>
+          <div class="mission-row">
+            <span class="row-icon heart-dot" aria-hidden="true">♥</span>
+            <p>
+              <strong>Keep your hearts</strong
+              ><small>Three bumps and you're out</small>
+            </p>
+          </div>
+          <div class="side-divider"></div>
+          <p class="control-label">CONTROLS</p>
+          <div class="side-controls">
+            <span>Move</span
+            ><span class="key-cluster"
+              ><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span
+            >
+          </div>
+          <div class="side-controls"><span>Pause</span><kbd>ESC</kbd></div>
+          <div class="tip-box">
+            <span aria-hidden="true">☀</span>
+            <p>
+              <strong>Meadow tip</strong><br />Coins sparkle more brightly near
+              the edges.
+            </p>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="page-footer">
+        <span>MADE FOR A SUNNY AFTERNOON</span
+        ><span>✦ &nbsp; KEEP WANDERING &nbsp; ✦</span>
+      </footer>
+    </main>
+  </body>
+</html>
